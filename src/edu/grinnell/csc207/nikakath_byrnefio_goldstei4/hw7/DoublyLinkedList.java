@@ -214,6 +214,7 @@ public class DoublyLinkedList<T> implements ListOf<T> {
 
     /**
      * Swap the elements at the positions the correspond to c1 and c2.
+     * Currently does not work
      * 
      * @pre Both c1 and c2 are valid and associated with this list. v1 =
      *      get(c1), v2 = get(c2)
@@ -253,18 +254,20 @@ public class DoublyLinkedList<T> implements ListOf<T> {
     } // swap(Cursor, Cursor)
 
     /**
-     * Search for a value, moving the iterator to that value.
+     * Search for a value that fulfills a predicate, moving the cursor to the
+     * first such value in the list.
      * 
      * @return true, if the value was found
      * @return false, if the value was not found
      * 
-     * @post If the value is not found, the iterator has not moved.
-     * @post If the value is found, get(it) is value
+     * @post If the value is not found, the cursor has not moved.
+     * @post If the value is found, get(c) is the first such value in the list
      */
     public boolean search(Cursor c, Predicate<T> pred) throws Exception {
 	DoublyLinkedListCursor<T> curs = (DoublyLinkedListCursor<T>) c;
 	Node<T> temp = curs.pos;
 
+	curs.pos = this.front;
 	while (this.hasNext(curs)) {
 	    if (pred.test(curs.pos.val)) {
 		return true;

@@ -126,11 +126,49 @@ public class Experiment {
 	 * strings.get(s2));
 	 */
 
+	// Testing Search
+	pen.println();
+	pen.println("Testing search(c, pred):");
+	pen.print("  Current list: ");
+	printList(pen, numbers);
+	Cursor g = numbers.front();
+	Even even = new Even();
+	Seven seven = new Seven();
 	
+	System.out.println("  cursor @ " + numbers.get(g));
+	System.out.println("  " + numbers.search(g, even));
+	System.out.println("  cursor @ " + numbers.get(g));
+
+	pen.print("  Current list: ");
+	printList(pen, numbers);
+	numbers.advance(g);
+	System.out.println("  cursor @ " + numbers.get(g));
+	System.out.println("  " + numbers.search(g, even));
+	System.out.println("  cursor @ " + numbers.get(g));
+
+	pen.print("  Current list: ");
+	printList(pen, numbers);
+	System.out.println("  cursor @ " + numbers.get(g));
+	System.out.println("  " + numbers.search(g, seven));
+	System.out.println("  cursor @ " + numbers.get(g));
 	
+	System.out.println("  cursor @ " + numbers.get(g));
+	System.out.println("  " + numbers.search(g, even));
+	System.out.println("  cursor @ " + numbers.get(g));
+
+	//Testing select
+	Odd odd = new Odd();
+	pen.println("Testing select(pred):");
+	pen.print("  Current list: ");
 	
+	System.out.print("even numbers:  ");
+	DoublyLinkedList<T> sevens =  (DoublyLinkedList) numbers.select(even);
+	PrintList(pen, sevens);
 	
-	
+	System.out.println("odd numbers:  " + numbers.select(odd));
+
+	System.out.println("sevens:  " + numbers.select(seven));
+
 	// And we're done
 	pen.close();
     } // main(String[])
