@@ -39,36 +39,26 @@ public class DoublyLinkedList<T> implements ListOf<T> {
      * @throws Exception
      *             If there is no memory to expand the list.
      * 
-     * @post The previous element to the cursor remains the same 
-     * val is inserted immediately after the cursor 
-     * The element that previously followed the cursor follows val
+     * @post The previous element to the cursor remains the same val is inserted
+     *       immediately after the cursor The element that previously followed
+     *       the cursor follows val
      */
     public void insert(T val, Cursor c) throws Exception {
 	Node<T> in = new Node(val);
 	DoublyLinkedListCursor<T> curs = (DoublyLinkedListCursor<T>) c;
+	// Insert into null list
 	if (this.front == null) {
-	 /*   this.front = in;
-	      this.back = in; */
 	    this.prepend(val);
-	}
-	else if (curs.pos == this.front) {
-	  /*  in.next = this.front.next;
-	    this.front.prev = in;
-	    this.front = in; */
+	    curs.pos = this.front;
+	} else if (curs.pos == this.front) { // Insert at front
 	    this.prepend(val);
-	    curs.pos = curs.pos.prev;
-	}
-	//else if (curs.pos == this.back) {
-	 /*   in.prev = this.back.prev;
-	    this.back.next = in;
-	    this.back = in; */
-	  //  this.append(val);
-	    //curs.pos = curs.pos.next;
-	 else {
+	    curs.pos = this.front;
+	} else { // Insert into middle
 	    in.prev = curs.pos.prev;
 	    curs.pos.prev.next = in;
-	    in.next = curs.pos.next;
-	    curs.pos.next.prev = in;
+	    in.next = curs.pos;
+	    curs.pos.prev = in;
+	    curs.pos = in;
 	}
     } // insert(T, Cursor)
 
@@ -103,9 +93,9 @@ public class DoublyLinkedList<T> implements ListOf<T> {
      *       The front of the list is now val
      */
     public void prepend(T val) throws Exception {
-	Node<T> pre = new Node(val);	
+	Node<T> pre = new Node(val);
 	pre.next = this.front;
-	if(this.front != null){
+	if (this.front != null) {
 	    front.prev = pre;
 	}
 	this.front = pre;
@@ -125,13 +115,13 @@ public class DoublyLinkedList<T> implements ListOf<T> {
     public void delete(Cursor c) throws Exception {
 	DoublyLinkedListCursor<T> curs = (DoublyLinkedListCursor<T>) c;
 	if (curs.pos != this.front) {
-	curs.pos.prev.next = curs.pos.next;
-	}else{
+	    curs.pos.prev.next = curs.pos.next;
+	} else {
 	    this.front = this.front.next;
 	}
-	if(curs.pos != this.back){
-	curs.pos.next.prev = curs.pos.prev;
-	}else{
+	if (curs.pos != this.back) {
+	    curs.pos.next.prev = curs.pos.prev;
+	} else {
 	    this.back = this.back.prev;
 	}
 	curs.pos = curs.pos.next;
@@ -233,17 +223,33 @@ public class DoublyLinkedList<T> implements ListOf<T> {
 	DoublyLinkedListCursor<T> curs1 = (DoublyLinkedListCursor<T>) c1;
 	DoublyLinkedListCursor<T> curs2 = (DoublyLinkedListCursor<T>) c2;
 	Node<T> temp = curs1.pos;
+	if (this.front == curs1.pos) {
+	    this.front = curs2.pos;
+	} else if (this.front == curs2.pos) {
+	    this.front = curs1.pos;
+	} else if (this.back == curs1.pos) {
+	    this.back = curs2.pos;
+	} else if (this.back == curs2.pos) {
+	    this.back = curs1.pos;
+	}
 
-	curs1.pos.prev = curs2.pos.prev;
-	curs1.pos.next = curs2.pos.next;
-	curs2.pos.prev.next = curs1.pos;
-	curs2.pos.next.prev = curs1.pos;
+	if (curs1.pos.next == curs2.pos || curs2.pos.next == curs1.pos) {
+	    curs1.pos.prev = curs2.pos;
+	    curs1.pos.next = curs2.pos.next;
+	    curs2.pos.prev = temp.prev;
+	    curs2.pos.next = curs1.pos;
+	    curs1.pos.next.prev = curs1.pos;
+	    curs2.pos.prev.next = curs2.pos;
+	} else {
 
-	curs2.pos.prev = temp.prev;
-	curs2.pos.next = temp.next;
-	temp.prev.next = curs2.pos;
-	temp.next.prev = curs2.pos;
+	    curs2.pos.prev.next = curs1.pos;
+	    curs2.pos.next.prev = curs1.pos;
 
+	    curs2.pos.prev = temp.prev;
+	    curs2.pos.next = temp.next;
+	    temp.prev.next = curs2.pos;
+	    temp.next.prev = curs2.pos;
+	}
     } // swap(Cursor, Cursor)
 
     /**
