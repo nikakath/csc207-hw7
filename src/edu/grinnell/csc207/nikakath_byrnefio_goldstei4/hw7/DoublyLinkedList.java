@@ -17,16 +17,16 @@ public class DoublyLinkedList<T> implements ListOf<T> {
 	/**
 	 * Create a new linked list.
 	 */
-	public DoublyLinkedList() {
-		this.front = null;
-		this.back = null;
-	} // DoublyLinkedList
+    public DoublyLinkedList() {
+	this.front = null;
+	this.back = null;
+    } // DoublyLinkedList
 
 	// ITERABLE METHODS
-	@Override
-	public Iterator<T> iterator() {
-		return new DoublyLinkedListIterator(this.front);
-	}
+    @Override
+    public Iterator<T> iterator() {
+	return new DoublyLinkedListIterator(this.front);
+    }
 
 	// LIST OF METHODS
 	/**
