@@ -8,25 +8,30 @@ import java.util.Iterator;
 public class DoublyLinkedList<T> implements ListOf<T> {
 
 	// FIELDS
-	
+	/**
+	 * The first node in the list.
+	 */
 	Node<T> front;
 
+	/**
+	 * The last node in the list.
+	 */
 	Node<T> back;
 
 	// CONSTRUCTORS
 	/**
 	 * Create a new linked list.
 	 */
-    public DoublyLinkedList() {
-	this.front = null;
-	this.back = null;
-    } // DoublyLinkedList
+	public DoublyLinkedList() {
+		this.front = null;
+		this.back = null;
+	} // DoublyLinkedList
 
 	// ITERABLE METHODS
-    @Override
-    public Iterator<T> iterator() {
-	return new DoublyLinkedListIterator(this.front);
-    }
+	@Override
+	public Iterator<T> iterator() {
+		return new DoublyLinkedListIterator(this.front);
+	} // iterator()
 
 	// LIST OF METHODS
 	/**
@@ -43,28 +48,28 @@ public class DoublyLinkedList<T> implements ListOf<T> {
 	 *       immediately after the cursor The element that previously followed
 	 *       the cursor follows val
 	 */
-    public void insert(T val, Cursor c) throws Exception {
-	Node<T> in = new Node(val);
-	DoublyLinkedListCursor<T> curs = (DoublyLinkedListCursor<T>) c;
-	// Insert into null list
-	if (this.front == null) {
-	    this.prepend(val);
-	    curs.pos = this.front;
-	} else if (curs.pos == this.front) { // Insert at front
-	    this.prepend(val);
-	    curs.pos = this.front;
-	} else { // Insert into middle
-	    in.prev = curs.pos.prev;
-	    curs.pos.prev.next = in;
-	    in.next = curs.pos;
-	    curs.pos.prev = in;
-	    curs.pos = in;
-	}
-    } // insert(T, Cursor)
+	public void insert(T val, Cursor c) throws Exception {
+		Node<T> in = new Node(val);
+		DoublyLinkedListCursor<T> curs = (DoublyLinkedListCursor<T>) c;
+		// Insert into null list
+		if (this.front == null) {
+			this.prepend(val);
+			curs.pos = this.front;
+		} else if (curs.pos == this.front) { // Insert at front
+			this.prepend(val);
+			curs.pos = this.front;
+		} else { // Insert into middle
+			in.prev = curs.pos.prev;
+			curs.pos.prev.next = in;
+			in.next = curs.pos;
+			curs.pos.prev = in;
+			curs.pos = in;
+		}
+	} // insert(T, Cursor)
 
 	/**
-	 * Add an element to the end of the list. (Creates a one-element list if 
-	 * the list is empty.)
+	 * Add an element to the end of the list. (Creates a one-element list if the
+	 * list is empty.)
 	 * 
 	 * @throws Exception
 	 *             If there is no memory to expand the list.
@@ -72,16 +77,16 @@ public class DoublyLinkedList<T> implements ListOf<T> {
 	 * @post val is inserted immediately after the original back of the list The
 	 *       back of the list is now val
 	 */
-    public void append(T val) throws Exception {
-	if (this.back == null) {
-	    this.back = new Node(val);
-	    this.front = this.back;
-	} else {
-	    this.back.next = new Node(val);
-	    this.back.next.prev = this.back;
-	    this.back = this.back.next;
-	}
-    } // append(T)
+	public void append(T val) throws Exception {
+		if (this.back == null) {
+			this.back = new Node(val);
+			this.front = this.back;
+		} else {
+			this.back.next = new Node(val);
+			this.back.next.prev = this.back;
+			this.back = this.back.next;
+		}
+	} // append(T)
 
 	/**
 	 * Add an element to the front of the list. (Creates a one-element list if
@@ -92,18 +97,18 @@ public class DoublyLinkedList<T> implements ListOf<T> {
 	 * @post val is inserted immediately before the original front of the list
 	 *       The front of the list is now val
 	 */
-    public void prepend(T val) throws Exception {
-    	Node<T> pre = new Node(val);
-    	pre.next = this.front;
-    	
-    	if (this.front != null) {
-    		front.prev = pre;
-    	}
-    	this.front = pre;
-    	if (this.back == null) {
-    		this.back = pre;
-    	}
-    } // prepend(T)
+	public void prepend(T val) throws Exception {
+		Node<T> pre = new Node(val);
+		pre.next = this.front;
+
+		if (this.front != null) {
+			front.prev = pre;
+		}
+		this.front = pre;
+		if (this.back == null) {
+			this.back = pre;
+		}
+	} // prepend(T)
 
 	/**
 	 * Delete the element immediately after the cursor.
@@ -113,30 +118,30 @@ public class DoublyLinkedList<T> implements ListOf<T> {
 	 *       immediately before the cursor is the successor of the now-deleted
 	 *       element.
 	 */
-    public void delete(Cursor c) throws Exception {
-    	DoublyLinkedListCursor<T> curs = (DoublyLinkedListCursor<T>) c;
-    	if (curs.pos != this.front) {
-    		curs.pos.prev.next = curs.pos.next;
-    	} else {
-    		this.front = this.front.next;
-    	}
-    	if (curs.pos != this.back) {
-    		curs.pos.next.prev = curs.pos.prev;
-    	} else {
-    		this.back = this.back.prev;
-    	}
-    	curs.pos = curs.pos.next;
-    } // delete(Cursor)
+	public void delete(Cursor c) throws Exception {
+		DoublyLinkedListCursor<T> curs = (DoublyLinkedListCursor<T>) c;
+		if (curs.pos != this.front) {
+			curs.pos.prev.next = curs.pos.next;
+		} else {
+			this.front = this.front.next;
+		}
+		if (curs.pos != this.back) {
+			curs.pos.next.prev = curs.pos.prev;
+		} else {
+			this.back = this.back.prev;
+		}
+		curs.pos = curs.pos.next;
+	} // delete(Cursor)
 
-    /**
-     * Get an cursor right before the front of the list.
-     * 
-     * @throws Exception
-     *             If the list is empty.
-     */
-    public Cursor front() throws Exception {
-    	return new DoublyLinkedListCursor<T>(this.front);
-    } // front()
+	/**
+	 * Get an cursor right before the front of the list.
+	 * 
+	 * @throws Exception
+	 *             If the list is empty.
+	 */
+	public Cursor front() throws Exception {
+		return new DoublyLinkedListCursor<T>(this.front);
+	} // front()
 
 	/**
 	 * Advance to the next position between elements
@@ -146,12 +151,12 @@ public class DoublyLinkedList<T> implements ListOf<T> {
 	 *             If there is no next element.
 	 * @post The cursor has advanced one element
 	 */
-    public void advance(Cursor c) throws Exception {
-    	DoublyLinkedListCursor<T> curs = (DoublyLinkedListCursor<T>) c;
-    	if (curs.pos != null) {
-    		curs.pos = curs.pos.next;
-    	}
-    } // advance(Cursor)
+	public void advance(Cursor c) throws Exception {
+		DoublyLinkedListCursor<T> curs = (DoublyLinkedListCursor<T>) c;
+		if (curs.pos != null) {
+			curs.pos = curs.pos.next;
+		}
+	} // advance(Cursor)
 
 	/**
 	 * Retreat to the previous position between elements
@@ -161,12 +166,12 @@ public class DoublyLinkedList<T> implements ListOf<T> {
 	 *             If there is no previous element.
 	 * @post The cursor has retreated one element
 	 */
-    public void retreat(Cursor c) throws Exception {
-    	DoublyLinkedListCursor<T> curs = (DoublyLinkedListCursor<T>) c;
-    	if (curs.pos != null) {
-    		curs.pos = curs.pos.prev;
-    	}
-    } // retreat(Cursor)
+	public void retreat(Cursor c) throws Exception {
+		DoublyLinkedListCursor<T> curs = (DoublyLinkedListCursor<T>) c;
+		if (curs.pos != null) {
+			curs.pos = curs.pos.prev;
+		}
+	} // retreat(Cursor)
 
 	/**
 	 * Get the element immediately following this cursor.
@@ -175,11 +180,11 @@ public class DoublyLinkedList<T> implements ListOf<T> {
 	 * @throws Exception
 	 *             If the preconditions are not met.
 	 */
-    public T get(Cursor c) throws Exception {
-    	DoublyLinkedListCursor<T> curs = (DoublyLinkedListCursor<T>) c;
-    	T value = curs.pos.val;
-    	return value;
-    } // get
+	public T get(Cursor c) throws Exception {
+		DoublyLinkedListCursor<T> curs = (DoublyLinkedListCursor<T>) c;
+		T value = curs.pos.val;
+		return value;
+	} // get(Cursor)
 
 	/**
 	 * Get the element immediately preceding this cursor.
@@ -188,179 +193,189 @@ public class DoublyLinkedList<T> implements ListOf<T> {
 	 * @throws Exception
 	 *             If the preconditions are not met.
 	 */
-    public T getPrev(Cursor c) throws Exception {
-    	DoublyLinkedListCursor<T> curs = (DoublyLinkedListCursor<T>) c;
-    	return curs.pos.prev.val;
-    } // getPrev(Cursor)
+	public T getPrev(Cursor c) throws Exception {
+		DoublyLinkedListCursor<T> curs = (DoublyLinkedListCursor<T>) c;
+		return curs.pos.prev.val;
+	} // getPrev(Cursor)
 
 	/**
 	 * Determine if it's safe to advance to the next position.
 	 * 
 	 * @pre pos is valid and associated with the list.
 	 */
-    public boolean hasNext(Cursor c) {
-    	DoublyLinkedListCursor<T> curs = (DoublyLinkedListCursor<T>) c;
-    	return curs.pos.next != null;
-    } // hasNext
+	public boolean hasNext(Cursor c) {
+		DoublyLinkedListCursor<T> curs = (DoublyLinkedListCursor<T>) c;
+		return curs.pos.next != null;
+	} // hasNext(Cursor)
 
 	/**
 	 * Determine if it's safe to retreat to the previous position.
 	 * 
 	 * @pre pos is valid and associated with the list.
 	 */
-    public boolean hasPrev(Cursor c) {
-    	DoublyLinkedListCursor<T> curs = (DoublyLinkedListCursor<T>) c;
-    	return curs.pos.prev != null;
-    } // hasPrev
+	public boolean hasPrev(Cursor c) {
+		DoublyLinkedListCursor<T> curs = (DoublyLinkedListCursor<T>) c;
+		return curs.pos.prev != null;
+	} // hasPrev(Cursor)
 
 	/**
 	 * Swap the elements at the positions the correspond to c1 and c2.
 	 * 
 	 * @pre Both c1 and c2 are valid and associated with this list. v1 =
-	 *       get(c1), v2 = get(c2)
-	 *      
+	 *      get(c1), v2 = get(c2)
+	 * 
 	 * @post c1 and c2 are unchanged. v1 = get(c2), v2 = get(c1)
 	 */
-    public void swap(Cursor c1, Cursor c2) throws Exception {
-    	DoublyLinkedListCursor<T> curs1 = (DoublyLinkedListCursor<T>) c1;
-    	DoublyLinkedListCursor<T> curs2 = (DoublyLinkedListCursor<T>) c2;
-    	Node<T> temp = curs1.pos;
-    	if (this.front == curs1.pos) {
-    		this.front = curs2.pos;
-    	} else if (this.front == curs2.pos) {
-    		this.front = curs1.pos;
-    	} else if (this.back == curs1.pos) {
-    		this.back = curs2.pos;
-    	} else if (this.back == curs2.pos) {
-    		this.back = curs1.pos;
-    	}
+	public void swap(Cursor c1, Cursor c2) throws Exception {
+		DoublyLinkedListCursor<T> curs1 = (DoublyLinkedListCursor<T>) c1;
+		DoublyLinkedListCursor<T> curs2 = (DoublyLinkedListCursor<T>) c2;
+		Node<T> temp = curs1.pos;
+		if (this.front == curs1.pos) {
+			this.front = curs2.pos;
+		} else if (this.front == curs2.pos) {
+			this.front = curs1.pos;
+		} else if (this.back == curs1.pos) {
+			this.back = curs2.pos;
+		} else if (this.back == curs2.pos) {
+			this.back = curs1.pos;
+		}
 
-    	if (curs1.pos.next == curs2.pos || curs2.pos.next == curs1.pos) {
-    		curs1.pos.prev = curs2.pos;
-    		curs1.pos.next = curs2.pos.next;
-    		curs2.pos.prev = temp.prev;
-    		curs2.pos.next = curs1.pos;
-    		curs1.pos.next.prev = curs1.pos;
-    		curs2.pos.prev.next = curs2.pos;
-    	} else {
+		if (curs1.pos.next == curs2.pos || curs2.pos.next == curs1.pos) {
+			curs1.pos.prev = curs2.pos;
+			curs1.pos.next = curs2.pos.next;
+			curs2.pos.prev = temp.prev;
+			curs2.pos.next = curs1.pos;
+			curs1.pos.next.prev = curs1.pos;
+			curs2.pos.prev.next = curs2.pos;
+		} else {
 
-    		curs2.pos.prev.next = curs1.pos;
-    		curs2.pos.next.prev = curs1.pos;
+			curs2.pos.prev.next = curs1.pos;
+			curs2.pos.next.prev = curs1.pos;
 
-    		curs2.pos.prev = temp.prev;
-    		curs2.pos.next = temp.next;
-    		temp.prev.next = curs2.pos;
-    		temp.next.prev = curs2.pos;
-    	}
-    } // swap(Cursor, Cursor)
+			curs2.pos.prev = temp.prev;
+			curs2.pos.next = temp.next;
+			temp.prev.next = curs2.pos;
+			temp.next.prev = curs2.pos;
+		}
+	} // swap(Cursor, Cursor)
 
-    /**
-     * Search for a value that fulfills a predicate, moving the cursor to the
-     * first such value in the list.
-     * 
-     * @return true, if the value was found
-     * @return false, if the value was not found
-     * 
-     * @pre c is valid and associated with the list.
+	/**
+	 * Search for a value that fulfills a predicate, moving the cursor to the
+	 * first such value in the list.
+	 * 
+	 * @return true, if the value was found
+	 * @return false, if the value was not found
+	 * 
+	 * @pre c is valid and associated with the list.
 	 * @pre pred is applicable to all the values in the list.
-     * 
-     * @post If the value is not found, the cursor has not moved.
-     * @post If the value is found, get(c) is the first such value in the list
-     */
-    public boolean search(Cursor c, Predicate<T> pred) throws Exception {
-    	DoublyLinkedListCursor<T> curs = (DoublyLinkedListCursor<T>) c;
-    	Node<T> temp = curs.pos;
+	 * 
+	 * @post If the value is not found, the cursor has not moved.
+	 * @post If the value is found, get(c) is the first such value in the list
+	 */
+	public boolean search(Cursor c, Predicate<T> pred) throws Exception {
+		DoublyLinkedListCursor<T> curs = (DoublyLinkedListCursor<T>) c;
+		Node<T> temp = curs.pos;
 
-    	curs.pos = this.front;
-    	while (this.hasNext(curs)) {
-    		if (pred.test(curs.pos.val)) {
-    			return true;
-    		}
-    		curs.pos = curs.pos.next;
-    	}
-    	curs.pos = temp;
-    	return false;
-    } // search(Cursor, Predicate<T>)
+		curs.pos = this.front;
+		while (this.hasNext(curs)) {
+			if (pred.test(curs.pos.val)) {
+				return true;
+			}
+			curs.pos = curs.pos.next;
+		}
+		curs.pos = temp;
+		return false;
+	} // search(Cursor, Predicate<T>)
 
 	/**
 	 * Selects the elements from the list that satisfy the given predicate.
 	 * 
-	 * @return vals, a new list containing all elements from the given
-	 *         	list for which pred returns true
+	 * @return vals, a new list containing all elements from the given list for
+	 *         which pred returns true
 	 * 
 	 * @pre pred must be applicable to all elements of the list
 	 * 
-	 * @post vals contains all elements for which pred returns true exactly 
-	 *         once
+	 * @post vals contains all elements for which pred returns true exactly once
 	 */
-    public ListOf<T> select(Predicate<T> pred) throws Exception {
-    	DoublyLinkedList<T> vals = new DoublyLinkedList<T>();
-    	DoublyLinkedListCursor<T> curs = new DoublyLinkedListCursor<T>(
-    			this.front);
-    	while (this.hasNext(curs)) {
-    		if (pred.test(curs.pos.val)) {
-    			vals.append(curs.pos.val);
-    		}
-    		this.advance(curs);
-    	}
-    	return vals;
-    } // select(Predicate<T>)
+	public ListOf<T> select(Predicate<T> pred) throws Exception {
+		DoublyLinkedList<T> vals = new DoublyLinkedList<T>();
+		DoublyLinkedListCursor<T> curs = new DoublyLinkedListCursor<T>(
+				this.front);
+		while (this.hasNext(curs)) {
+			if (pred.test(curs.pos.val)) {
+				vals.append(curs.pos.val);
+			}
+			this.advance(curs);
+		}
+		return vals;
+	} // select(Predicate<T>)
 
 	/**
 	 * Grab a sublist.
 	 * 
-	 * @return vals, a sublist containing all elements between start and
-	 *       	end including start but not end in the order they appear in the
-	 *       	original list
+	 * @return vals, a sublist containing all elements between start and end
+	 *         including start but not end in the order they appear in the
+	 *         original list
 	 * 
 	 * @pre start and end are valid and associated with the list.
-	 * @pre	start precedes end.
+	 * @pre start precedes end.
 	 * 
 	 * @throws Exception
 	 *             If the cursors are invalid.
 	 */
-    public ListOf<T> subList(Cursor start, Cursor end) throws Exception {
-    	DoublyLinkedListCursor<T> curs1 = (DoublyLinkedListCursor<T>) start;
-    	DoublyLinkedListCursor<T> curs2 = (DoublyLinkedListCursor<T>) end;
-    	DoublyLinkedList<T> vals = new DoublyLinkedList<T>();
+	public ListOf<T> subList(Cursor start, Cursor end) throws Exception {
+		DoublyLinkedListCursor<T> curs1 = (DoublyLinkedListCursor<T>) start;
+		DoublyLinkedListCursor<T> curs2 = (DoublyLinkedListCursor<T>) end;
+		DoublyLinkedList<T> vals = new DoublyLinkedList<T>();
 
-    	while (!curs1.equals(curs2)) {
-    		vals.append(curs1.pos.val);
-    		this.advance(curs1);
-    	}
-    	return vals;
-    } // subList(Cursor, Cursor)
+		while (!curs1.equals(curs2)) {
+			vals.append(curs1.pos.val);
+			this.advance(curs1);
+		}
+		return vals;
+	} // subList(Cursor, Cursor)
 
 	/**
 	 * Determine if one iterator precedes another iterator.
 	 * 
 	 * @return true if c1 precedes c2, including if they point to the same
-	 *          element, false otherwise
+	 *         element, false otherwise
 	 * 
 	 * @pre c1 and c2 are valid and associated with the list.
 	 * 
 	 * @throws Exception
 	 *             If the cursors are invalid.
-	 *             
+	 * 
 	 */
-    public boolean precedes(Cursor c1, Cursor c2) throws Exception {
-    	DoublyLinkedListCursor<T> curs1 = (DoublyLinkedListCursor<T>) c1;
-    	DoublyLinkedListCursor<T> curs2 = (DoublyLinkedListCursor<T>) c2;
-    	while (this.hasNext(curs1)) {
-    		if (curs1.equals(curs2)) {
-    			return true;
-    		}
-    	}
-    	return false;
-    } // precedes(Cursor, Cursor)
+	public boolean precedes(Cursor c1, Cursor c2) throws Exception {
+		DoublyLinkedListCursor<T> curs1 = (DoublyLinkedListCursor<T>) c1;
+		DoublyLinkedListCursor<T> curs2 = (DoublyLinkedListCursor<T>) c2;
+		while (this.hasNext(curs1)) {
+			if (curs1.equals(curs2)) {
+				return true;
+			}
+		}
+		return false;
+	} // precedes(Cursor, Cursor)
 } // class DoublyLinkedList
 
 /**
  * Nodes in the list.
  */
 class Node<T> {
+	/**
+	 * The value contained in this node.
+	 */
 	T val;
+
+	/**
+	 * The next node in the list.
+	 */
 	Node<T> next;
+
+	/**
+	 * The previous node in the list.
+	 */
 	Node<T> prev;
 
 	/**
@@ -391,6 +406,9 @@ class DoublyLinkedListCursor<T> implements Cursor {
  * Iterators in the list.
  */
 class DoublyLinkedListIterator<T> implements Iterator<T> {
+	/**
+	 * The node in the list to which this iterator points.
+	 */
 	Node<T> pos;
 
 	/**
@@ -418,8 +436,12 @@ class DoublyLinkedListIterator<T> implements Iterator<T> {
 		return this.pos.next != null;
 	} // hasNext()
 
+	/**
+	 * Remove from the list.
+	 */
 	@Override
 	public void remove() {
+		// UNIMPLEMENTED
 		throw new UnsupportedOperationException();
 	} // remove()
 } // class DoublyLinkedListIterator
